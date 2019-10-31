@@ -61,10 +61,10 @@ endVarST(char *nomeVar);
  * A lista ligada e' com cabeca
  * Cada celula da lista e' do tipo CelST.
  */
-void 
-initST()
-{
-    AVISO(st.c: Vixe! Ainda nao fiz a funcao iniST.);
+void initST() {
+    ini = mallocSafe(sizeof(CelST));
+    ini->proxVar = NULL;
+    ini->tipoVar = INDEFINIDA;
 }
 
 /*-------------------------------------------------------------
@@ -84,9 +84,18 @@ initST()
  *
  *  Esta funcao deve utilizar a funcao endVarST().
  */
-CelObjeto *
-getValorST(char *nomeVar)
-{
+CelObjeto * getValorST(char *nomeVar) {
+    CelObjeto *novo = NULL;
+    CelST *celulaTabela;
+    if ((celulaTabela = endVarST(nomeVar)) != NULL) {
+        novo = mallocSafe(sizeof(CelObjeto));
+        novo->categoria = FLOAT;
+        novo->valor.vFloat = celulaTabela->valorVar.vFloat;
+        novo->prox = NULL
+
+    }
+
+    return novo;
     /* O objetivo do return a seguir e evitar que 
        ocorra erro de sintaxe durante a fase de desenvolvimento 
        do EP. Esse return devera ser removido depois que
@@ -134,9 +143,20 @@ getValorST(char *nomeVar)
  * 
  * A funcao _nao_ deve alterar a celula PVALOR.
  */
-void
-setValorST(char *nomeVar, CelObjeto *pValor)
-{
+void setValorST(char *nomeVar, CelObjeto *pValor) {
+    CelST *celulaTabela, *aux;
+    if ((celulaTabela = endVarST(nomeVar)) != NULL) {
+        celulaTabela->tipoVar = pValor->categoria;
+        celulaTabela->valorVar = pValor->valor;
+    }
+    else {
+        celulaTabela = mallocSafe(sizeof(CelST));
+        celulaTabela->tipoVar = pValor->categoria;
+        celulaTabela->valorVar = pValor->valor;
+        aux = ini;
+        ini = celulaTabela;
+        ini->proxVar = aux;
+    }
     AVISO(st.c: Vixe! Ainda nao fiz a funcao setValorST.);
 }
 
@@ -148,9 +168,13 @@ setValorST(char *nomeVar, CelObjeto *pValor)
  *
  * Funcao utiliza a funcao free().
  */
-void 
-freeST()
-{
+void freeST() {
+    CelST *aux;
+    while (ini != NULL) {
+        aux = ini->proxVar;
+        free(ini);
+        ini = aux;
+    }
     AVISO(st.c: Vixe! Ainda nao fiz a funcao freeST.);
 }
 
@@ -173,10 +197,17 @@ freeST()
  *     'prova1': 7
  *     'soma': 18
  */
-void
-showST()
-{
-    AVISO(st.c: Vixe! Ainda nao fiz a funcao showST.);
+void showST() {
+    CelST *atual = ini;
+    printf("\n==========================\n");
+    printf("Tabela de simbolos\n");
+    printf("'nome': valor\n");
+    printf(". . . . . . . . . . . . . .\n");
+    while (atual != INDEFINIDA) {
+        printf("'%s': %f\n", atual->nomeVar, atual->valorVar.vFloat);
+        atual = atual->proxVar;
+    }
+    
 }
 
 /*-------------------------------------------------------------
@@ -190,9 +221,13 @@ showST()
  * Considere a utilizacao de funcoes da biblioteca string.h, tais
  * como strcpy, strncpy, strcmp,....
  */
-static CelST *
-endVarST(char *nomeVar)
-{
+static CelST * endVarST(char *nomeVar) {
+    CelST *aux = ini;
+
+    while (aux->tipoVar != INDEFINIDA) {
+        if (stcmp(aux->nomeVar, nomeVar)) return aux;
+        aux = aux->prox;
+    }
     /* O objetivo do return a seguir e evitar que 
        ocorra erro de sintaxe durante a fase de desenvolvimento 
        do EP. Esse return devera ser removido depois que
