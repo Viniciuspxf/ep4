@@ -58,17 +58,24 @@ CelObjeto * infixaParaPosfixa(CelObjeto *iniInfixa) {
     CelObjeto *aux;
     Stack pilha = stackInit();
 
-    while (aux != NULL) {
+    while (aux != INDEFINIDA) {
         if (aux->categoria != FLOAT) {
-            while (stackTop(pilha)->categoria != INDEFINIDA && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
-                //coloca na fila stackPop
+            if (aux->valor.vInt != 8)            
+                while (stackTop(pilha)->categoria != INDEFINIDA && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
+                    //coloca na fila stackPop
+                }
+            else {
+                while (stackTop(pilha)->categoria != INDEFINIDA && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
+                    //coloca na fila stacktop
+                }
             }
-            stackPush(pilha, aux);
         }
+        stackPush(pilha, aux);
+        aux = aux->prox;
     }
-    
-            
-        
+    //desempilha tudo e atribui a última célula
+    //free na pilha
+
     /* O objetivo do return a seguir e evitar que 
        ocorra erro de sintaxe durante a fase de desenvolvimento 
        do EP. Esse return devera ser removido depois que
