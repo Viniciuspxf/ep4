@@ -54,9 +54,21 @@
   *  posfixa (abre e fecha parenteses) devem ser liberadas 
   *  (freeObjeto()).
   */
-CelObjeto *
-infixaParaPosfixa(CelObjeto *iniInfixa)
-{
+CelObjeto * infixaParaPosfixa(CelObjeto *iniInfixa) {
+    CelObjeto *aux;
+    Stack pilha = stackInit();
+
+    while (aux != NULL) {
+        if (aux->categoria != FLOAT) {
+            while (stackTop(pilha)->categoria != INDEFINIDA && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
+                //coloca na fila stackPop
+            }
+            stackPush(pilha, aux);
+        }
+    }
+    
+            
+        
     /* O objetivo do return a seguir e evitar que 
        ocorra erro de sintaxe durante a fase de desenvolvimento 
        do EP. Esse return devera ser removido depois que
