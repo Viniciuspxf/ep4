@@ -55,31 +55,34 @@
   *  (freeObjeto()).
   */
 CelObjeto * infixaParaPosfixa(CelObjeto *iniInfixa) {
-    CelObjeto *aux, *ini, *fim, *anterior;
+    CelObjeto *aux, *ini, *fim, *proximo;
     Stack pilha = stackInit();
     ini = iniInfixa;
     fim = ini;
     aux = iniInfixa->prox;
     while (aux != NULL) {
+        proximo = aux->prox;
         if (aux->categoria == FECHA_PARENTESES) {
             while (stackTop(pilha)->categoria != ABRE_PARENTESES) {
                 fim->prox = stackPop(pilha);
                 fim = fim->prox;
             }
-            anterior = aux;
             
-            freeObjeto(anterior);
+            freeObjeto(aux);
             freeObjeto(stackPop(pilha));
         }
-        else { 
-            if (aux->categoria != FLOAT && aux->categoria != ID)           
-                while (!stackEmpty(pilha) && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
-                    fim->prox = stackPop(pilha);
-                    fim = fim->prox;
-                }
+        else if (aux->categoria != FLOAT && aux->categoria != ID) {          
+            while (!stackEmpty(pilha) && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
+                fim->prox = stackPop(pilha);
+                fim = fim->prox;
+            }
             stackPush(pilha, aux);
         }
-        aux = aux->prox;
+        else {
+            fim->prox = aux;
+            fim = fim->prox;
+        }
+        aux = proximo;
     }
     while (!stackEmpty(pilha)) {
         fim->prox = stackPop(pilha);

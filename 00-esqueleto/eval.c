@@ -232,31 +232,33 @@ void itensParaValores(CelObjeto *iniFilaItens) {
  */
 CelObjeto * eval (CelObjeto *iniPosfixa, Bool mostrePilhaExecucao) {
     Stack pilha = stackInit();
-    CelObjeto *aux, *entrada, *resultado = NULL, *operandoA, *operandoB, *anterior;
+    CelObjeto *aux, *entrada, *resultado = NULL, *operandoA = NULL, *operandoB = NULL, *anterior, *proximo;
+    aux = iniPosfixa->prox;
 
-    for (aux = iniPosfixa->prox; aux != NULL; aux = aux->prox) {
+    while (aux != NULL) {
+        proximo = aux->prox;
         if (aux->categoria == OPER_MENOS_UNARIO || aux->categoria == OPER_LOGICO_NOT) {
             operandoA = stackPop(pilha);
             operandoB = NULL;
             if (operandoA->categoria == ID) {
                 anterior = operandoA;
-                freeObjeto(anterior);
                 operandoA = getValorST(operandoA->valor.pStr);
+                freeObjeto(anterior);
             }
         }
         else if (aux->categoria != FLOAT && aux->categoria != ID) {
             operandoB = stackPop(pilha);
             if (operandoB->categoria == ID) {
                 anterior = operandoB;
-                freeObjeto(anterior);
                 operandoB = getValorST(operandoB->valor.pStr);
+                freeObjeto(anterior);
             }
 
             operandoA = stackPop(pilha);
             if (aux->categoria != OPER_ATRIBUICAO && operandoA->categoria == ID) {
                 anterior = operandoA;
-                freeObjeto(anterior);
                 operandoA = getValorST(operandoA->valor.pStr);
+                freeObjeto(anterior);
             }
         }
         entrada = operandoA;
@@ -347,6 +349,8 @@ CelObjeto * eval (CelObjeto *iniPosfixa, Bool mostrePilhaExecucao) {
         }
 
         if (operandoB != NULL) freeObjeto(operandoB);
+
+        aux = proximo;
     }
     if (!stackEmpty(pilha)) {
         resultado = stackPop(pilha);

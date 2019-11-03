@@ -1,2 +1,8 @@
-Ver se tudo é liberado na função infixa pra posfixa no st.c
-mudar a função mostreuso
+Ver se tudo é liberado na função infixa pra posfixa no posfixa.c ok
+mudar a função mostreuso ok
+
+segfault no eval.c ok (por enquanto)
+
+problemas nos parenteses (eval.c, objetos.c e posfixa.c)
+    print errado, atribuição desnecessária, segfault
+
