@@ -140,10 +140,10 @@ static char *nomeCategoria[MAX_CATEGORIAS] =
  * EP4: deve liberar os string referentes a variaveis (categoria ID).
  * 
  */
-void
-freeObjeto(CelObjeto *pObj)
-{
-    AVISO(objetos.c: Vixe! Ainda nao fiz a funcao freeObjeto.);
+void freeObjeto(CelObjeto *pObj) {
+    if (pObj->categoria == ID || (pObj->categoria >= FLOAT_STR && pObj->categoria <= STR))
+        free(pObj->valor.pStr);
+    free(pObj);
 }
 
 /*-------------------------------------------------------------
@@ -155,10 +155,14 @@ freeObjeto(CelObjeto *pObj)
  * Esta funcao deve utilizar a funcao freeObjeto().
  *
  */
-void
-freeListaObjetos(CelObjeto *iniLista)
-{
-    AVISO(objetos.c: Vixe! Ainda nao fiz a funcao freeListaObjetos.);
+void freeListaObjetos(CelObjeto *iniLista) {
+    CelObjeto *aux;
+
+    while (iniLista != NULL) {
+        aux = iniLista->prox;
+        freeObjeto(iniLista);
+        iniLista = aux;
+    }
 }
 
 /*-------------------------------------------------------------
@@ -179,10 +183,8 @@ freeListaObjetos(CelObjeto *iniLista)
  *     Em geral, uma constante poderia ser da categoria FLOAT,
  *     INT (ignorada), BOOL (ignorada) ou STR (ignorada).
  */
-void
-mostreValor(CelObjeto *pValor)
-{
-    AVISO(objetos.c: Vixe! Ainda nao fiz a funcao mostreValor.);
+void mostreValor(CelObjeto *pValor) {
+    printf("  %.6f", pValor->valor.vFloat);
 }
 
 /*-------------------------------------------------------------
@@ -258,10 +260,33 @@ mostreValor(CelObjeto *pValor)
  * sendo ignoradas no EP.
  *
  */
-void
-mostreObjeto(CelObjeto *pObj, int tipoLista)
-{
-    AVISO(objetos.c: Vixe! Ainda nao fiz a funcao mostreObjeto.);
+void mostreObjeto(CelObjeto *pObj, int tipoLista) {
+    switch (tipoLista) {
+        case (ITENS):
+            printf("  \"%s\"  (%s)\n", pObj->valor.pStr, nomeCategoria[pObj->categoria]);
+            break;
+        case (VALORES):
+            if (pObj->categoria == FLOAT){
+                mostreValor(pObj);
+                printf("  (valor float)\n");
+            } 
+            else
+                printf("  prec=%d  (%s)\n", pObj->valor.vInt, nomeCategoria[pObj->categoria]);
+            break;
+        case(POSFIXA):
+            switch (pObj->categoria) {
+                case (FLOAT):
+                    printf(" %f", pObj->valor.vFloat);
+                    break;
+                case (ID):
+                    printf(" %s", pObj->valor.pStr);
+                    break;
+                default:
+                    printf(" %s", operador[pObj->categoria]);
+                    break;
+            }
+            break;
+    }
 }
 
 /*-------------------------------------------------------------
@@ -318,8 +343,24 @@ mostreObjeto(CelObjeto *pObj, int tipoLista)
  *     Expressao posfixa: p1 p2 3 p3 * = 5 + = 
  *     
  */ 
-void
-mostreListaObjetos (CelObjeto *iniLista, int tipoLista)
-{
-    AVISO(objetos.c: Vixe! Ainda nao fiz a funcao mostreListaObjetos.);
+void mostreListaObjetos (CelObjeto *iniLista, int tipoLista) {
+    CelObjeto *aux;
+    if (tipoLista != POSFIXA) printf("\n==========================\n");
+    switch (tipoLista) {
+        case (ITENS):
+            printf("  Fila de valores\n");
+            printf("  valor  (categoria)\n");
+            break;
+        case (VALORES):
+            printf("  Fila de itens lexicos\n");
+            printf("  item  (categoria)\n");
+            break;
+        case (POSFIXA):
+            printf("Expressao posfixa:");
+            break;
+    }
+    for (aux = iniLista->prox; aux != NULL; aux = aux->prox){ 
+        mostreObjeto(aux, tipoLista);
+    }
+    printf("\n");
 }    

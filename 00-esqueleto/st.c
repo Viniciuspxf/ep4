@@ -91,7 +91,7 @@ CelObjeto * getValorST(char *nomeVar) {
         novo = mallocSafe(sizeof(CelObjeto));
         novo->categoria = FLOAT;
         novo->valor.vFloat = celulaTabela->valorVar.vFloat;
-        novo->prox = NULL
+        novo->prox = NULL;
 
     }
 
@@ -203,7 +203,7 @@ void showST() {
     printf("Tabela de simbolos\n");
     printf("'nome': valor\n");
     printf(". . . . . . . . . . . . . .\n");
-    while (atual != INDEFINIDA) {
+    while (atual->tipoVar != INDEFINIDA) {
         printf("'%s': %f\n", atual->nomeVar, atual->valorVar.vFloat);
         atual = atual->proxVar;
     }
@@ -225,8 +225,8 @@ static CelST * endVarST(char *nomeVar) {
     CelST *aux = ini;
 
     while (aux->tipoVar != INDEFINIDA) {
-        if (stcmp(aux->nomeVar, nomeVar)) return aux;
-        aux = aux->prox;
+        if (strcmp(aux->nomeVar, nomeVar)) return aux;
+        aux = aux->proxVar;
     }
     /* O objetivo do return a seguir e evitar que 
        ocorra erro de sintaxe durante a fase de desenvolvimento 

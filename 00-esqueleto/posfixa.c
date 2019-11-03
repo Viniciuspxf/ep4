@@ -55,26 +55,38 @@
   *  (freeObjeto()).
   */
 CelObjeto * infixaParaPosfixa(CelObjeto *iniInfixa) {
-    CelObjeto *aux;
+    CelObjeto *aux, *ini, *fim, *anterior;
     Stack pilha = stackInit();
-
-    while (aux != INDEFINIDA) {
-        if (aux->categoria != FLOAT) {
-            if (aux->valor.vInt != 8)            
-                while (stackTop(pilha)->categoria != INDEFINIDA && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
-                    //coloca na fila stackPop
-                }
-            else {
-                while (stackTop(pilha)->categoria != INDEFINIDA && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
-                    //coloca na fila stacktop
-                }
+    ini = iniInfixa;
+    fim = ini;
+    aux = iniInfixa->prox;
+    while (aux != NULL) {
+        if (aux->categoria == FECHA_PARENTESES) {
+            while (stackTop(pilha)->categoria != ABRE_PARENTESES) {
+                fim->prox = stackPop(pilha);
+                fim = fim->prox;
             }
+            anterior = aux;
+            
+            freeObjeto(anterior);
+            freeObjeto(stackPop(pilha));
         }
-        stackPush(pilha, aux);
+        else { 
+            if (aux->categoria != FLOAT && aux->categoria != ID)           
+                while (!stackEmpty(pilha) && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
+                    fim->prox = stackPop(pilha);
+                    fim = fim->prox;
+                }
+            stackPush(pilha, aux);
+        }
         aux = aux->prox;
     }
-    //desempilha tudo e atribui a última célula
-    //free na pilha
+    while (!stackEmpty(pilha)) {
+        fim->prox = stackPop(pilha);
+        fim = fim->prox;
+    }
+    stackFree(pilha);
+    return ini;
 
     /* O objetivo do return a seguir e evitar que 
        ocorra erro de sintaxe durante a fase de desenvolvimento 

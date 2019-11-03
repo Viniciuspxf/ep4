@@ -1,0 +1,2 @@
+Ver se tudo é liberado na função infixa pra posfixa no st.c
+mudar a função mostreuso

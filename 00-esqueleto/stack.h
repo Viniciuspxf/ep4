@@ -49,4 +49,21 @@
  *
  */
 
+#include "objetos.h"
+typedef CelObjeto* Stack;
+
+Stack stackInit();
+
+int stackEmpty(Stack);
+
+void stackPush(Stack, CelObjeto*);
+
+CelObjeto* stackPop(Stack);
+
+CelObjeto* stackTop(Stack);
+
+void stackFree(Stack);
+
+void stackDump(Stack);
+
 #endif /* _STACK_H */

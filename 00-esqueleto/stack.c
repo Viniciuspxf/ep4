@@ -49,3 +49,52 @@
  *
  */
 
+Stack stackInit() {
+    Stack pilha = mallocSafe(sizeof(CelObjeto));
+    pilha->categoria = INDEFINIDA;
+    pilha->valor.pStr = NULL;
+    pilha->prox = NULL;
+    return pilha;
+}
+
+int stackEmpty(Stack pilha) {
+    return (pilha->prox == NULL);
+}
+
+void stackPush(Stack pilha, CelObjeto *celula){
+    CelObjeto *aux;
+
+    aux = pilha->prox;
+    celula-> prox = aux;
+    pilha->prox = celula;
+}
+
+CelObjeto* stackPop(Stack pilha) {
+    CelObjeto *objeto;
+
+    objeto = pilha->prox;
+    pilha->prox = objeto->prox;
+    objeto->prox = NULL;
+    return objeto;
+}
+
+CelObjeto* stackTop(Stack pilha) {
+    return pilha->prox;
+}
+
+void stackFree(Stack pilha) {
+    Stack aux;
+    while (pilha != NULL) {
+        aux = pilha->prox;
+        free(pilha);
+        pilha = aux;
+    }
+
+}
+
+void stackDump(Stack pilha) {
+    Stack aux;
+    for (aux = pilha->prox; aux != NULL; aux = aux->prox)
+        printf("  %.6f\n", aux->valor.vFloat);
+
+}

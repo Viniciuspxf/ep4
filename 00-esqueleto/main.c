@@ -71,6 +71,8 @@ main(int argc, char *argv[])
     Bool mostreItensLexicos  = FALSE;
     Bool mostreValores       = FALSE;
     Bool mostrePilhaExecucao = FALSE;
+    Bool mostrePosfixa = FALSE;
+    Bool mostreTabela = FALSE;
 
     FILE *fEntrada   = stdin; 
     String nomeScript = NULL; /* nome do modo com instrucoes a serem executadas
@@ -96,6 +98,8 @@ main(int argc, char *argv[])
 	    modoInterativo = FALSE;
 	    nomeScript     = argv[argc]+2; 
 	}
+    else if (!strncmp(argv[argc], "-e", 2)) mostrePosfixa = TRUE;
+    else if (!strncmp(argv[argc], "-t", 2)) mostreTabela = TRUE;
 	else 
 	{ /* opcao invalida */
 	    fprintf(stderr, "%s: opcao invalida '%s'\n", nomePrograma, argv[argc]); 
@@ -130,6 +134,8 @@ main(int argc, char *argv[])
     /*------------------------------------------------------------*/
     /* 4 crie a tabela de simbolos                                */
     /* TAREFA EP4 */
+
+    initST();
 
     /*------------------------------------------------------------*/
     /* 5 interprete cada uma das linhas dadas */
@@ -177,7 +183,10 @@ main(int argc, char *argv[])
            posfixa obtida deve ser exibida. A funcao
            mostreListaObjetos deve ser adaptada para isso. Veja o
            arquivo objetos.c  */
-        
+    
+    iniFila = infixaParaPosfixa(iniFila);
+    if (mostrePosfixa) mostreListaObjetos(iniFila, POSFIXA);
+
 	/* 5.6 calcule o valor da expressao posfixa */
 	/* TAREFA EP3: a funcao a seguir deve ter sido escrita para 
            o EP3. Veja o modulo eval.c */
@@ -203,6 +212,8 @@ main(int argc, char *argv[])
 	
 	/* 5.8 mostre a tabela de simbolos, opcao "-t" */
         /* TAREFA EP4 */	
+    
+    if (mostreTabela) showST();
 
 	/* 5.9 libere os itens da Fila */
         /*     idealmente, nesse ponto, so deveria ser liberada a
@@ -224,6 +235,8 @@ main(int argc, char *argv[])
     /*------------------------------------------------------------*/
     /* 6 libere a tabela de simbolos                              */
     /* TAREFA EP4 */
+
+    freeST();
 
     if (modoInterativo)
     {

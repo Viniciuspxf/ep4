@@ -161,10 +161,35 @@ static const int precedencia[MAX_OPERADORES] =
  *
  */
 
-void
-itensParaValores(CelObjeto *iniFilaItens)
-{
-    AVISO(eval.c: Vixe! Ainda nao fiz a funcao itensParaValores.);
+void itensParaValores(CelObjeto *iniFilaItens) {
+    CelObjeto *aux;
+    char *str;
+    for (aux = iniFilaItens->prox; aux != NULL; aux = aux->prox) {
+        switch (aux->categoria) {
+            case (INT_STR):
+                str = aux->valor.pStr;
+                aux->valor.vFloat = atoi(str);
+                aux->categoria = FLOAT;
+                free(str);
+                break;
+            case (FLOAT_STR):
+                str = aux->valor.pStr;
+                aux->valor.vFloat = atof(str);
+                aux->categoria = FLOAT;
+                free(str);
+                break;
+            case (BOOL_STR):
+                if (strncmp("True", aux->valor.pStr, strlen("True")))
+                    aux->valor.vFloat = 1;
+                else aux->valor.vFloat = 0;
+                aux->categoria = FLOAT;
+                break;
+            default:
+                aux->valor.vInt = precedencia[aux->categoria];
+                break;
+
+        }
+    }
 }
 
 /*-------------------------------------------------------------
@@ -205,15 +230,130 @@ itensParaValores(CelObjeto *iniFilaItens)
  *      '=' e variaveis. A maneira de proceder esta descrita no 
  *      enunciado na secao "Interpretacao da expressao posfixa".
  */
-CelObjeto *
-eval (CelObjeto *iniPosfixa, Bool mostrePilhaExecucao)
-{
-    /* O objetivo do return a seguir e evitar que 
-       ocorra erro de sintaxe durante a fase de desenvolvimento 
-       do EP. Esse return devera ser removido depois que
-       a funcao estiver pronta.
-    */
-    AVISO(eval.c: Vixe! Ainda nao fiz a funcao eval.);    
-    return NULL; 
+CelObjeto * eval (CelObjeto *iniPosfixa, Bool mostrePilhaExecucao) {
+    Stack pilha = stackInit();
+    CelObjeto *aux, *entrada, *resultado = NULL, *operandoA, *operandoB, *anterior;
+
+    for (aux = iniPosfixa->prox; aux != NULL; aux = aux->prox) {
+        if (aux->categoria == OPER_MENOS_UNARIO || aux->categoria == OPER_LOGICO_NOT) {
+            operandoA = stackPop(pilha);
+            operandoB = NULL;
+            if (operandoA->categoria == ID) {
+                anterior = operandoA;
+                freeObjeto(anterior);
+                operandoA = getValorST(operandoA->valor.pStr);
+            }
+        }
+        else if (aux->categoria != FLOAT && aux->categoria != ID) {
+            operandoB = stackPop(pilha);
+            if (operandoB->categoria == ID) {
+                anterior = operandoB;
+                freeObjeto(anterior);
+                operandoB = getValorST(operandoB->valor.pStr);
+            }
+
+            operandoA = stackPop(pilha);
+            if (aux->categoria != OPER_ATRIBUICAO && operandoA->categoria == ID) {
+                anterior = operandoA;
+                freeObjeto(anterior);
+                operandoA = getValorST(operandoA->valor.pStr);
+            }
+        }
+        entrada = operandoA;
+        switch (aux->categoria) {
+            case (OPER_IGUAL): 
+                if (operandoA->valor.vFloat == operandoB->valor.vFloat) 
+                    entrada->valor.vFloat = 1;
+                else entrada->valor.vFloat = 0;
+                break;
+            case (OPER_DIFERENTE):
+                if (operandoA->valor.vFloat != operandoB->valor.vFloat) 
+                    entrada->valor.vFloat = 1;
+                else entrada->valor.vFloat = 0;
+                break;
+            case (OPER_MAIOR_IGUAL):
+                if (operandoA >= operandoB) 
+                    entrada->valor.vFloat = 1;
+                else entrada->valor.vFloat = 0;
+                break;
+            case (OPER_MENOR_IGUAL):
+                if (operandoA <= operandoB) 
+                    entrada->valor.vFloat = 1;
+                else entrada->valor.vFloat = 0;
+                break;
+            case (OPER_EXPONENCIACAO):
+                entrada->valor.vFloat = pow(operandoA->valor.vFloat, operandoB->valor.vFloat);
+                break;
+            case (OPER_DIVISAO_INT):
+                entrada->valor.vFloat = (int) (operandoA->valor.vFloat/operandoB->valor.vFloat);
+                break;
+            case (OPER_MAIOR):
+                if (operandoA->valor.vFloat > operandoB->valor.vFloat) 
+                    entrada->valor.vFloat = 1;
+                else entrada->valor.vFloat = 0;
+                break;
+            case (OPER_MENOR):
+                if (operandoA->valor.vFloat < operandoB->valor.vFloat) 
+                    entrada->valor.vFloat = 1;
+                else entrada->valor.vFloat = 0;
+                break;
+            case (OPER_RESTO_DIVISAO):
+                entrada->valor.vFloat = operandoA->valor.vFloat - operandoB->valor.vFloat*((int) (operandoA->valor.vFloat/operandoB->valor.vFloat));
+                break;
+            case (OPER_MULTIPLICACAO):
+                entrada->valor.vFloat = operandoA->valor.vFloat * operandoB->valor.vFloat;
+                break;
+            case (OPER_DIVISAO):
+                entrada->valor.vFloat = operandoA->valor.vFloat/operandoB->valor.vFloat;
+                break;
+            case (OPER_ADICAO):
+                entrada->valor.vFloat = operandoA->valor.vFloat + operandoB->valor.vFloat;
+                break;
+            case (OPER_SUBTRACAO):
+                entrada->valor.vFloat = operandoA->valor.vFloat - operandoB->valor.vFloat;
+                break;
+            case (OPER_MENOS_UNARIO):
+                entrada->valor.vFloat = -operandoA->valor.vFloat;
+                break;
+            case (OPER_LOGICO_AND):
+                if (operandoA->valor.vFloat * operandoB->valor.vFloat == 0) 
+                    entrada->valor.vFloat = 0;
+                else entrada->valor.vFloat = 1;
+                break;
+            case (OPER_LOGICO_OR):
+                if (operandoA->valor.vFloat == 0  && operandoB->valor.vFloat == 0) 
+                    entrada->valor.vFloat = 0;
+                else entrada->valor.vFloat = 1;
+                break;
+            case (OPER_LOGICO_NOT):
+                if (operandoA->valor.vFloat == 0) entrada->valor.vFloat = 1;
+                else entrada->valor.vFloat = 0;
+                break;
+            case (OPER_ATRIBUICAO):
+                setValorST(operandoA->valor.pStr, operandoB);
+                break;
+            default:
+                entrada = aux;
+                break;
+        }
+        stackPush(pilha, entrada);
+        if (mostrePilhaExecucao) {
+            printf("\n==========================\n");
+            printf("  Pilha de execucao\n");
+            printf("  valor\n");
+            printf(". . . . . . . . . . . . . . .\n");
+            stackDump(pilha);
+            printf("\n");
+        }
+
+        if (operandoB != NULL) freeObjeto(operandoB);
+    }
+    if (!stackEmpty(pilha)) {
+        resultado = stackPop(pilha);
+    }
+
+    iniPosfixa->prox = NULL;
+    stackFree(pilha);
+    return resultado; 
 }
 
