@@ -185,7 +185,8 @@ void itensParaValores(CelObjeto *iniFilaItens) {
                 aux->categoria = FLOAT;
                 break;
             default:
-                aux->valor.vInt = precedencia[aux->categoria];
+                if (aux-> categoria < ABRE_PARENTESES)
+                    aux->valor.vInt = precedencia[aux->categoria];
                 break;
 
         }

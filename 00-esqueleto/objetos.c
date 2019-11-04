@@ -270,8 +270,9 @@ void mostreObjeto(CelObjeto *pObj, int tipoLista) {
                 mostreValor(pObj);
                 printf("  (valor float)\n");
             } 
-            else
+            else if (pObj->categoria < ABRE_PARENTESES)
                 printf("  prec=%d  (%s)\n", pObj->valor.vInt, nomeCategoria[pObj->categoria]);
+            else printf("  '%s'  (%s)\n", pObj->valor.pStr, nomeCategoria[pObj->categoria]);;
             break;
         case(POSFIXA):
             switch (pObj->categoria) {
@@ -347,11 +348,11 @@ void mostreListaObjetos (CelObjeto *iniLista, int tipoLista) {
     CelObjeto *aux;
     if (tipoLista != POSFIXA) printf("\n==========================\n");
     switch (tipoLista) {
-        case (ITENS):
+        case (VALORES):
             printf("  Fila de valores\n");
             printf("  valor  (categoria)\n");
             break;
-        case (VALORES):
+        case (ITENS):
             printf("  Fila de itens lexicos\n");
             printf("  item  (categoria)\n");
             break;
