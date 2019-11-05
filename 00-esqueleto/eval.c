@@ -240,7 +240,6 @@ CelObjeto * eval (CelObjeto *iniPosfixa, Bool mostrePilhaExecucao) {
         proximo = aux->prox;
         if (aux->categoria == OPER_MENOS_UNARIO || aux->categoria == OPER_LOGICO_NOT) {
             operandoA = stackPop(pilha);
-            operandoB = NULL;
             if (operandoA->categoria == ID) {
                 anterior = operandoA;
                 operandoA = getValorST(operandoA->valor.pStr);
@@ -349,10 +348,14 @@ CelObjeto * eval (CelObjeto *iniPosfixa, Bool mostrePilhaExecucao) {
             printf("\n");
         }
 
-        if (operandoB != NULL) freeObjeto(operandoB);
-
+        if (operandoB != NULL) {
+            freeObjeto(operandoB);
+            operandoB = NULL;
+        }
+        
         aux = proximo;
     }
+
     if (!stackEmpty(pilha)) {
         resultado = stackPop(pilha);
     }

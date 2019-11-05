@@ -67,15 +67,15 @@ CelObjeto * infixaParaPosfixa(CelObjeto *iniInfixa) {
                 fim->prox = stackPop(pilha);
                 fim = fim->prox;
             }
-            
             freeObjeto(aux);
             freeObjeto(stackPop(pilha));
         }
-        else if (aux->categoria != FLOAT && aux->categoria != ID) {          
-            while (!stackEmpty(pilha) && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
-                fim->prox = stackPop(pilha);
-                fim = fim->prox;
-            }
+        else if (aux->categoria != FLOAT && aux->categoria != ID) {
+            if (aux->categoria != ABRE_PARENTESES)          
+                while (!stackEmpty(pilha) && stackTop(pilha)->categoria != ABRE_PARENTESES && aux->valor.vInt < stackTop(pilha)->valor.vInt) {
+                    fim->prox = stackPop(pilha);
+                    fim = fim->prox;
+                }
             stackPush(pilha, aux);
         }
         else {
@@ -88,14 +88,8 @@ CelObjeto * infixaParaPosfixa(CelObjeto *iniInfixa) {
         fim->prox = stackPop(pilha);
         fim = fim->prox;
     }
+
+    fim->prox = NULL;
     stackFree(pilha);
     return ini;
-
-    /* O objetivo do return a seguir e evitar que 
-       ocorra erro de sintaxe durante a fase de desenvolvimento 
-       do EP. Esse return devera ser removido depois que
-       a funcao estiver pronta.
-    */
-    AVISO(posfixa.c: Vixe! Ainda nao fiz a funcao infixaParaPosfixa.);
-    return NULL; 
 }

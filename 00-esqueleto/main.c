@@ -135,7 +135,7 @@ main(int argc, char *argv[])
     /* 4 crie a tabela de simbolos                                */
     /* TAREFA EP4 */
 
-    initST(); printf("criou a tabela de símbolos");
+    initST();
 
     /*------------------------------------------------------------*/
     /* 5 interprete cada uma das linhas dadas */
@@ -153,7 +153,7 @@ main(int argc, char *argv[])
 
 	/* 5.3 construa fila de itens lexicos e mostre os itens se
            o programa tiver sido chamado com a opcao "-l" */
-	iniFila = crieFilaItens(linha); printf("criou a fila de itens");
+	iniFila = crieFilaItens(linha);
 	if (iniFila && mostreItensLexicos)
 	{
 	    /* TAREFA EP3: a funcao a seguir ja deve ter sido escrita
@@ -168,7 +168,7 @@ main(int argc, char *argv[])
 	/* 5.5 substitua os itens por valores */
 	/* TAREFA EP3: a funcao a seguir ja deve ter sido escrita
            para o EP3. Veja o modulo eval.c */
-	itensParaValores(iniFila); printf("acionou itens para valores");
+	itensParaValores(iniFila);
 	if (iniFila && mostreValores)
 	{
             /* TAREFA EP3: a funcao a seguir ja deve ter sido escrita
@@ -183,10 +183,10 @@ main(int argc, char *argv[])
            posfixa obtida deve ser exibida. A funcao
            mostreListaObjetos deve ser adaptada para isso. Veja o
            arquivo objetos.c  */
-    printf("Vai entrar na funcao infixa pra posfixa");
+
     iniFila = infixaParaPosfixa(iniFila);
     if (mostrePosfixa) mostreListaObjetos(iniFila, POSFIXA);
-    printf("ENTROU NA FUNCAO INFIXA PRA POSFIXA");
+
 	/* 5.6 calcule o valor da expressao posfixa */
 	/* TAREFA EP3: a funcao a seguir deve ter sido escrita para 
            o EP3. Veja o modulo eval.c */
@@ -224,7 +224,7 @@ main(int argc, char *argv[])
                aos nomes de variaves (categoria ID). 
                Veja o modulo objetos.c. */
 
-	freeListaObjetos(iniFila); 
+	freeListaObjetos(iniFila);
         iniFila = NULL; 
 	if (modoInterativo)
 	{

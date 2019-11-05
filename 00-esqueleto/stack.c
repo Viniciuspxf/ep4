@@ -29,7 +29,7 @@
 
 /* interface para o uso de uma pilha */
 #include "stack.h" 
-
+#include <stdlib.h>
 /* 
  * 
  * STACK.c: IMPLEMENTACAO DE UMA PILHA 
@@ -95,6 +95,8 @@ void stackFree(Stack pilha) {
 void stackDump(Stack pilha) {
     Stack aux;
     for (aux = pilha->prox; aux != NULL; aux = aux->prox)
-        printf("  %.6f\n", aux->valor.vFloat);
-
+        if (aux->categoria == FLOAT)
+            printf("  %.6f\n", aux->valor.vFloat);
+        else 
+            printf("  %s\n", aux->valor.pStr);
 }

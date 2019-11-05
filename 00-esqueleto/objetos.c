@@ -157,7 +157,6 @@ void freeObjeto(CelObjeto *pObj) {
  */
 void freeListaObjetos(CelObjeto *iniLista) {
     CelObjeto *aux;
-
     while (iniLista != NULL) {
         aux = iniLista->prox;
         freeObjeto(iniLista);

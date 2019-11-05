@@ -92,17 +92,9 @@ CelObjeto * getValorST(char *nomeVar) {
         novo->categoria = FLOAT;
         novo->valor.vFloat = celulaTabela->valorVar.vFloat;
         novo->prox = NULL;
-
     }
 
     return novo;
-    /* O objetivo do return a seguir e evitar que 
-       ocorra erro de sintaxe durante a fase de desenvolvimento 
-       do EP. Esse return devera ser removido depois que
-       a funcao estiver pronta.
-    */
-    AVISO(st.c: Vixe! Ainda nao fiz a funcao getValorST.);
-    return NULL;
 }
 
 /*-------------------------------------------------------------
@@ -153,11 +145,12 @@ void setValorST(char *nomeVar, CelObjeto *pValor) {
         celulaTabela = mallocSafe(sizeof(CelST));
         celulaTabela->tipoVar = pValor->categoria;
         celulaTabela->valorVar = pValor->valor;
-        aux = ini;
-        ini = celulaTabela;
-        ini->proxVar = aux;
+        celulaTabela->nomeVar = mallocSafe(strlen(nomeVar)*sizeof(char));
+        strncpy(celulaTabela->nomeVar, nomeVar, strlen(nomeVar));
+        aux = ini->proxVar;
+        ini->proxVar = celulaTabela;
+        celulaTabela->proxVar = aux;
     }
-    AVISO(st.c: Vixe! Ainda nao fiz a funcao setValorST.);
 }
 
 /*-------------------------------------------------------------
@@ -175,7 +168,6 @@ void freeST() {
         free(ini);
         ini = aux;
     }
-    AVISO(st.c: Vixe! Ainda nao fiz a funcao freeST.);
 }
 
 /*-------------------------------------------------------------
@@ -198,12 +190,12 @@ void freeST() {
  *     'soma': 18
  */
 void showST() {
-    CelST *atual = ini;
+    CelST *atual = ini->proxVar;
     printf("\n==========================\n");
     printf("Tabela de simbolos\n");
     printf("'nome': valor\n");
     printf(". . . . . . . . . . . . . .\n");
-    while (atual->tipoVar != INDEFINIDA) {
+    while (atual != NULL) {
         printf("'%s': %f\n", atual->nomeVar, atual->valorVar.vFloat);
         atual = atual->proxVar;
     }
@@ -222,17 +214,12 @@ void showST() {
  * como strcpy, strncpy, strcmp,....
  */
 static CelST * endVarST(char *nomeVar) {
-    CelST *aux = ini;
+    CelST *aux = ini->proxVar;
 
-    while (aux->tipoVar != INDEFINIDA) {
-        if (strcmp(aux->nomeVar, nomeVar)) return aux;
+    while (aux != NULL) {
+        if (!strcmp(aux->nomeVar, nomeVar)) return aux;
         aux = aux->proxVar;
     }
-    /* O objetivo do return a seguir e evitar que 
-       ocorra erro de sintaxe durante a fase de desenvolvimento 
-       do EP. Esse return devera ser removido depois que
-       a funcao estiver pronta.
-    */
-    AVISO(st.c: Vixe! Ainda nao fiz a funcao endVarST.);
+
     return NULL; 
 }
