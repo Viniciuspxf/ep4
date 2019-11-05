@@ -8,38 +8,5 @@ problemas nos parenteses (eval.c, objetos.c e posfixa.c)
 
 células contendo operadores não estão entrando no free
 
-Problemas com atribuição de variáveis no eval.c (talvez seja até no stackdump da pilha)
-
-
-Problema na hora de printar atribuição de variável:
-    pilha de execucão e também na tabela
-
-Expressao posfixa: batata 5.000000 +
-
-==========================
-  Pilha de execucao
-  valor
-. . . . . . . . . . . . . . .
-  batata
-
-
-==========================
-  Pilha de execucao
-  valor
-. . . . . . . . . . . . . . .
-  5.000000
-  batata
-
-
-==========================
-  Pilha de execucao
-  valor
-. . . . . . . . . . . . . . .
-  10.000000
-
-  10.000000
-==========================
-Tabela de simbolos
-'nome': valor
-. . . . . . . . . . . . . .
-'': 5.000000
+Problema na hora de printar atribuição de variável.
+Testar variáveis
