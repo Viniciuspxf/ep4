@@ -333,11 +333,17 @@ CelObjeto * eval (CelObjeto *iniPosfixa, Bool mostrePilhaExecucao) {
                 break;
             case (OPER_ATRIBUICAO):
                 setValorST(operandoA->valor.pStr, operandoB);
+                anterior = operandoA;
+                entrada = getValorST(anterior->valor.pStr);
+                freeObjeto(anterior);
                 break;
             default:
                 entrada = aux;
                 break;
         }
+
+        if (entrada != aux) freeObjeto(aux);
+
         stackPush(pilha, entrada);
         if (mostrePilhaExecucao) {
             printf("\n==========================\n");

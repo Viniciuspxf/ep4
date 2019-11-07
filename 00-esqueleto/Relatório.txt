@@ -1,12 +1,16 @@
 Ver se tudo é liberado na função infixa pra posfixa no posfixa.c ok
+
 mudar a função mostreuso ok
+
 segfault no eval.c ok (por enquanto)
-problemas nos parenteses (eval.c, objetos.c e posfixa.c)
-    print errado (corrigido)
-     atribuição desnecessária (corrigido)
-     segfault (corrigido)
 
-células contendo operadores não estão entrando no free
+Depois de atribuir falta transformar em um float!!! ok
 
-Problema na hora de printar atribuição de variável.
-Testar variáveis
+problemas nos parenteses (eval.c, objetos.c e posfixa.c) ok (por enquanto)
+
+
+células contendo operadores não estão entrando no free (aparentemente ok)
+
+ajustar saídas
+
+Testar os inputs exemplos e do arquivo

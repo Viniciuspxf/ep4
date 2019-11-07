@@ -72,7 +72,7 @@ CelObjeto * infixaParaPosfixa(CelObjeto *iniInfixa) {
         }
         else if (aux->categoria != FLOAT && aux->categoria != ID) {
             if (aux->categoria != ABRE_PARENTESES) {
-                if (aux->categoria != OPER_MENOS_UNARIO && aux->categoria != OPER_EXPONENCIACAO && aux->categoria != OPER_INDEXACAO && aux->categoria != OPER_LOGICO_NOT)      
+                if (aux->categoria != OPER_MENOS_UNARIO && aux->categoria != OPER_EXPONENCIACAO && aux->categoria != OPER_INDEXACAO && aux->categoria != OPER_LOGICO_NOT && aux->categoria != OPER_ATRIBUICAO)      
                     while (!stackEmpty(pilha) && stackTop(pilha)->categoria != ABRE_PARENTESES && aux->valor.vInt <= stackTop(pilha)->valor.vInt) {
                         fim->prox = stackPop(pilha);
                         fim = fim->prox;
