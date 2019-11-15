@@ -364,6 +364,11 @@ CelObjeto * eval (CelObjeto *iniPosfixa, Bool mostrePilhaExecucao) {
 
     if (!stackEmpty(pilha)) {
         resultado = stackPop(pilha);
+        if (resultado->categoria == ID) {
+            anterior = resultado;
+            resultado = getValorST(resultado->valor.pStr);
+            freeObjeto(anterior);
+        }
     }
 
     iniPosfixa->prox = NULL;
