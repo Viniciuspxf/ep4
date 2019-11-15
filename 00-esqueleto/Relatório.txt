@@ -4,7 +4,8 @@ mudar a função mostreuso ok
 
 segfault no eval.c ok (por enquanto)
 
-Atribuição de variável
+Atribuição de variável ok
 ajustar saídas
 
 Testar os inputs exemplos e do arquivo
+ver se tudo foi dado free

@@ -195,6 +195,7 @@ void showST() {
     printf("Tabela de simbolos\n");
     printf("'nome': valor\n");
     printf(". . . . . . . . . . . . . .\n");
+    if (atual == NULL) printf("tabela vazia.\n");
     while (atual != NULL) {
         printf("'%s': %f\n", atual->nomeVar, atual->valorVar.vFloat);
         atual = atual->proxVar;
