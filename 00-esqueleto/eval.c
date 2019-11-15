@@ -274,12 +274,12 @@ CelObjeto * eval (CelObjeto *iniPosfixa, Bool mostrePilhaExecucao) {
                 else entrada->valor.vFloat = 0;
                 break;
             case (OPER_MAIOR_IGUAL):
-                if (operandoA >= operandoB) 
+                if (operandoA->valor.vFloat >= operandoB->valor.vFloat) 
                     entrada->valor.vFloat = 1;
                 else entrada->valor.vFloat = 0;
                 break;
             case (OPER_MENOR_IGUAL):
-                if (operandoA <= operandoB) 
+                if (operandoA->valor.vFloat <= operandoB->valor.vFloat) 
                     entrada->valor.vFloat = 1;
                 else entrada->valor.vFloat = 0;
                 break;

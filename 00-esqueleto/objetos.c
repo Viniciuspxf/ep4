@@ -359,6 +359,10 @@ void mostreListaObjetos (CelObjeto *iniLista, int tipoLista) {
             printf("Expressao posfixa:");
             break;
     }
+
+    if (tipoLista != POSFIXA)
+        printf(". . . . . . . . . . . . . .\n");
+
     for (aux = iniLista->prox; aux != NULL; aux = aux->prox){ 
         mostreObjeto(aux, tipoLista);
     }

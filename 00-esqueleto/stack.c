@@ -86,7 +86,7 @@ void stackFree(Stack pilha) {
     Stack aux;
     while (pilha != NULL) {
         aux = pilha->prox;
-        free(pilha);
+        freeObjeto(pilha);
         pilha = aux;
     }
 

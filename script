@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd 00-esqueleto
+make
+valgrind --leak-check=full \
+         --show-leak-kinds=all \
+         --track-origins=yes \
+         --verbose \
+         --log-file=valgrind-out.txt \
+         ./pitao -s../expressoes.txt -l -v -p -e -t > ../saidameuep.txt
+
+cd ..
+./pitao-linux -sexpressoes.txt -l -v -p -e -t > saidaprofessora.txt

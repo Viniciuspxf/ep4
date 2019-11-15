@@ -201,6 +201,7 @@ main(int argc, char *argv[])
                para o EP3. Veja o modulo objetos.c */
 	    mostreValor(resultado);
 	    freeObjeto(resultado);
+        printf("\n");
             resultado = NULL; 
 	}
         

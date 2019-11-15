@@ -64,6 +64,7 @@ endVarST(char *nomeVar);
 void initST() {
     ini = mallocSafe(sizeof(CelST));
     ini->proxVar = NULL;
+    ini->valorVar.pStr = NULL;
     ini->tipoVar = INDEFINIDA;
 }
 
@@ -165,6 +166,8 @@ void freeST() {
     CelST *aux;
     while (ini != NULL) {
         aux = ini->proxVar;
+        if (ini->nomeVar != NULL)
+            free(ini->nomeVar);
         free(ini);
         ini = aux;
     }
@@ -197,10 +200,10 @@ void showST() {
     printf(". . . . . . . . . . . . . .\n");
     if (atual == NULL) printf("tabela vazia.\n");
     while (atual != NULL) {
-        printf("'%s': %f\n", atual->nomeVar, atual->valorVar.vFloat);
+        printf("  '%s': %f\n", atual->nomeVar, atual->valorVar.vFloat);
         atual = atual->proxVar;
     }
-    
+    printf("\n");
 }
 
 /*-------------------------------------------------------------
