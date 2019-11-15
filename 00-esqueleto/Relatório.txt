@@ -4,13 +4,7 @@ mudar a função mostreuso ok
 
 segfault no eval.c ok (por enquanto)
 
-Depois de atribuir falta transformar em um float!!! ok
-
-problemas nos parenteses (eval.c, objetos.c e posfixa.c) ok (por enquanto)
-
-
-células contendo operadores não estão entrando no free (aparentemente ok)
-
+Atribuição de variável
 ajustar saídas
 
 Testar os inputs exemplos e do arquivo

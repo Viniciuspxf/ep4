@@ -145,8 +145,8 @@ void setValorST(char *nomeVar, CelObjeto *pValor) {
         celulaTabela = mallocSafe(sizeof(CelST));
         celulaTabela->tipoVar = pValor->categoria;
         celulaTabela->valorVar = pValor->valor;
-        celulaTabela->nomeVar = mallocSafe(strlen(nomeVar)*sizeof(char));
-        strncpy(celulaTabela->nomeVar, nomeVar, strlen(nomeVar));
+        celulaTabela->nomeVar = mallocSafe((strlen(nomeVar) + 1)*sizeof(char));
+        strcpy(celulaTabela->nomeVar, nomeVar);
         aux = ini->proxVar;
         ini->proxVar = celulaTabela;
         celulaTabela->proxVar = aux;
